@@ -39,11 +39,15 @@ var tweetMap = (function() {
         var q = document.getElementById('search-term').value;
         var range = document.getElementById('range').value;
 
+        // Get lat/long from data
+        var lat = data.result.latitude;
+        var lon = data.result.longitude
+        
         // Set up empty array for the filters
         var filterArr = [];
 
         // Push lat/lon into filterArr
-        filterArr.push('lat=' + data.result.latitude, 'lon=' + data.result.longitude);
+        filterArr.push('lat=' + lat , 'lon=' + lon);
 
         // Push query and range in to filterArr
         if (q) {
@@ -57,7 +61,7 @@ var tweetMap = (function() {
         var filter = filterArr.join('&');
 
         // Call renderTwitterMap function, passing query string and lat/lon for map centering
-        renderTwitterMap(filter, data.result.latitude, data.result.longitude);
+        renderTwitterMap(filter, lat, lon);
     }
 
     // Get tweets and initialise map
