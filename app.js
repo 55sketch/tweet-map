@@ -2,6 +2,7 @@
 var express = require('express');
 var api = require('./api');
 var path = require('path');
+
 // Set app
 var app = express();
 
@@ -18,7 +19,7 @@ app.get('/', function (req, res) {
 });
 
 // API
-app.get('/api', api);
+app.get('/api', api.createAPI);
 
 // error handler
 app.use(function (err, req, res) {

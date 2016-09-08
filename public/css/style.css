@@ -54,7 +54,7 @@ button {
   button:hover {
     background: #39AC41; }
 
-#map-container {
+.map-container {
   width: 70%; }
 
 #map {

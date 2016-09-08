@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "description": "A Twitter Map",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
+  "author": "Nick Moreton <nick@55sketch.com>",
   "dependencies": {
     "express": "^4.x.x",
     "oauth": "^0.9.14",

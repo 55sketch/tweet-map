@@ -8,7 +8,7 @@
 
 ## Notes
 
-- The Twitter search API, even when requested by location, only returns a small percentage of tweets with geolocation. One possible solution would be to make the function recursive until there are 'X' amount of tweets in the geoTweets array, but performance could be an issue here
+- The Twitter search API, even when requested by location, only returns a [small percentage of tweets with geolocation](https://twittercommunity.com/t/search-api-returning-very-sparse-geocode-results/27998/95). One possible solution would be to make the function recursive until there are 'X' amount of tweets in the geoTweets array, but performance could be an issue here. 
 
 ## Libraries Used
 

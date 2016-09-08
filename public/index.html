@@ -3,30 +3,32 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Tweet Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UK Tweet Map</title>
     <link rel="stylesheet" href="css/style.css">
     <link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
 </head>
 
 <body class="loading">
+    <noscript>Sorry, this app requires JavaScript to function correctly</noscript>
     <div class="container">
         <section class="sidebar">
             <header>
                 <h1>UK TweetMap</h1>
             </header>
             <form action="" id="search-form">
-            <label for="search-term">Search Term</label>
-            <input type="text" id="search-term" value="#apple">
-            <label for="postcode">Post Code</label>
-            <input type="text" id="postcode" value="B3 3LP">
-            <label for="range">Range (Miles)</label>
-            <input type="number" id="range" value="50">
-            <button>Go</button>
+                <label for="search-term">Search Term</label>
+                <input type="text" id="search-term" value="#apple">
+                <label for="postcode">Post Code</label>
+                <input type="text" id="postcode" value="B3 3LP">
+                <label for="range">Range (Miles)</label>
+                <input type="number" id="range" value="50">
+                <button>Go</button>
             </form>
         </section>
-        <section id="map-container">
+        <main class="map-container" id="map-container">
             <div id="map" class="loading"></div>
-        </section>
+        </main>
     </div>
     <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
     <script src="main.js"></script>

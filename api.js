@@ -19,7 +19,8 @@ function filterGeoTweets(tweets) {
     return geoTweets;
 }
 
-module.exports = function(req, res) {
+// API 
+function createAPI(req, res) {
 
     // Set up Twitter query parameters
     var lat = req.query.lat || '',
@@ -78,4 +79,9 @@ module.exports = function(req, res) {
 
         }
     });
+}
+
+// Export
+module.exports = {
+    createAPI: createAPI
 };

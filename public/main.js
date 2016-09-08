@@ -1,55 +1,69 @@
-// Mapbox Access Token
-L.mapbox.accessToken = 'pk.eyJ1Ijoibmlja21vcmV0b24iLCJhIjoiN1YzbVQ4OCJ9.LtxClALVgG8k2DCnA5vX-A';
+var tweetMap = (function() {
 
-// Set up filters
-function init() {
-    // Filter array
-    var filterArr = [];
+    // Mapbox Access Token
+    L.mapbox.accessToken = 'pk.eyJ1Ijoibmlja21vcmV0b24iLCJhIjoiN1YzbVQ4OCJ9.LtxClALVgG8k2DCnA5vX-A';
 
-    // Get Values from form
-    var q = document.getElementById('search-term').value;
-    var range = document.getElementById('range').value;
-    var postcode = document.getElementById('postcode').value;
-    
-    // Get lat/lon from postcode api
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://api.postcodes.io/postcodes/' + postcode);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            var data = JSON.parse(xhr.responseText);
-            
-            // Push lat/lon into filterArr
-            filterArr.push('lat=' + data.result.latitude, 'lon=' + data.result.longitude);
-            
-            // Push query and range in to filterArr
-            if (q) {
-                filterArr.push('q=' + encodeURIComponent(q));
+    // Get function 
+    function get(url, success) {
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+
+                success(data);
+
+            } else {
+                console.log('Request failed.  Returned status of ' + xhr.status);
             }
-            if (range) {
-                filterArr.push('range=' + range + 'mi');
-            }
+        };
+        xhr.send();
+    }
 
-            // Join array to create query string
-            var filter = filterArr.join('&');
+    // Initialise app
+    function init() {
 
-            // Call renderTwitterMap function, passing query string and lat/lon for map centering
-            renderTwitterMap(filter, data.result.latitude, data.result.longitude);
-        } else {
-            console.log('Request failed.  Returned status of ' + xhr.status);
+        // Get Postcode from form
+        var postcode = document.getElementById('postcode').value;
+
+        // Get lat/lon from postcode api
+        get('https://api.postcodes.io/postcodes/' + postcode, setFilters)
+
+    }
+
+    // Set query string
+    function setFilters(data) {
+
+        // Get Query values from form
+        var q = document.getElementById('search-term').value;
+        var range = document.getElementById('range').value;
+
+        // Set up empty array for the filters
+        var filterArr = [];
+
+        // Push lat/lon into filterArr
+        filterArr.push('lat=' + data.result.latitude, 'lon=' + data.result.longitude);
+
+        // Push query and range in to filterArr
+        if (q) {
+            filterArr.push('q=' + encodeURIComponent(q));
         }
-    };
-    xhr.send();
-}
+        if (range) {
+            filterArr.push('range=' + range + 'mi');
+        }
 
-// Get tweets and render map
-function renderTwitterMap(filter, latitude, longitude) {
+        // Join array to create query string
+        var filter = filterArr.join('&');
 
-    // Get data from API
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/api?' + filter);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
+        // Call renderTwitterMap function, passing query string and lat/lon for map centering
+        renderTwitterMap(filter, data.result.latitude, data.result.longitude);
+    }
 
+    // Get tweets and initialise map
+    function renderTwitterMap(filter, latitude, longitude) {
+        get('/api?' + filter, function(data) {
+            
             // Remove loading class from body   
             document.getElementById('map').classList.remove('loading');
 
@@ -59,60 +73,62 @@ function renderTwitterMap(filter, latitude, longitude) {
                 zoom: 7
             });
 
-            // Parse data
-            var data = JSON.parse(xhr.responseText);
+            // Create markers on the map
+            createMarkers(map, data);
+        })
+    }
 
-            for (var i = data.length - 1; i >= 0; i--) {
-                
-                // Set tweet
-                var tweet = data[i];
-                
-                // Get geo from tweet
-                var lat = tweet.place.bounding_box.coordinates[0][0][1];
-                var lon = tweet.place.bounding_box.coordinates[0][0][0];
-                
-                // Check if tweet has media
-                if (tweet.entities.media) {
-                    var tweetImage = '<img src="' + tweet.entities.media[0].media_url_https + '"/>';
-                } else {
-                    var tweetImage = '';
-                }
+    // Add markers to the map
+    function createMarkers(map, data) {
 
-                // Add marker to the map
-                var marker = L.marker([lat, lon]).addTo(map);
-                
-                // Pop up template
-                var template = '<img src="' + tweet.user.profile_image_url_https + '" class="profile-image" /><h3 class="screen-name">' + tweet.user.screen_name + '</h3>' + tweetImage + '<p>' + tweet.text + '</p><a href="https://twitter.com/statuses/' + tweet.id_str + '"/>Link</a>'
-                
-                // Add template to marker popup
-                marker.bindPopup(template);
+        // Loop through data
+        for (var i = data.length - 1; i >= 0; i--) {
+
+            // Set tweet
+            var tweet = data[i];
+
+            // Get geo from tweet
+            var lat = tweet.place.bounding_box.coordinates[0][0][1];
+            var lon = tweet.place.bounding_box.coordinates[0][0][0];
+
+            // Check if tweet has media
+            if (tweet.entities.media) {
+                var tweetImage = '<img src="' + tweet.entities.media[0].media_url_https + '"/>';
+            } else {
+                var tweetImage = '';
             }
-        } else {
-            console.log('Request failed.  Returned status of ' + xhr.status);
+
+            // Add marker to the map
+            var marker = L.marker([lat, lon]).addTo(map);
+
+            // Pop up template
+            var template = '<img src="' + tweet.user.profile_image_url_https + '" class="profile-image" /><h3 class="screen-name">' + tweet.user.screen_name + '</h3>' + tweetImage + '<p>' + tweet.text + '</p><a href="https://twitter.com/statuses/' + tweet.id_str + '"/>Link</a>';
+
+            // Add template to marker popup
+            marker.bindPopup(template);
         }
-    };
+    }
 
-    xhr.send();
+    // Form submission function
+    function formSubmit(e) {
 
-}
+        // Prevent default
+        e.preventDefault();
 
-// Form submission function
-function formSubmit(e) {
-    // Prevent default
-    e.preventDefault();
+        // Remove initial map to avoid initialisation error
+        map.remove();
 
-    // Remove initial map to avoid initialisation error
-    map.remove();
-    
-    // Recreate Map element
-    document.getElementById('map-container').innerHTML = '<div id="map" class="loading"></div>';
+        // Recreate Map element
+        document.getElementById('map-container').innerHTML = '<div id="map" class="loading"></div>';
 
-    // Run init
+        // Run init
+        init();
+    }
+
+    // Bind function to form
+    document.getElementById('search-form').addEventListener('submit', formSubmit, false);
+
+    // Initialise first run of map render
     init();
-}
 
-// Bind function to form
-document.getElementById('search-form').addEventListener('submit', formSubmit, false);
-
-// Initialise first run of map render
-init();
+})();
