@@ -28,7 +28,7 @@ var tweetMap = (function() {
         var postcode = document.getElementById('postcode').value;
 
         // Get lat/lon from postcode api
-        get('https://api.postcodes.io/postcodes/' + postcode, setFilters)
+        get('https://api.postcodes.io/postcodes/' + postcode, setFilters);
 
     }
 
@@ -41,8 +41,8 @@ var tweetMap = (function() {
 
         // Get lat/long from data
         var lat = data.result.latitude;
-        var lon = data.result.longitude
-        
+        var lon = data.result.longitude;
+
         // Set up empty array for the filters
         var filterArr = [];
 
@@ -79,7 +79,7 @@ var tweetMap = (function() {
 
             // Create markers on the map
             createMarkers(map, data);
-        })
+        });
     }
 
     // Add markers to the map
@@ -95,11 +95,11 @@ var tweetMap = (function() {
             var lat = tweet.place.bounding_box.coordinates[0][0][1];
             var lon = tweet.place.bounding_box.coordinates[0][0][0];
 
+            var tweetImage = '';
+            
             // Check if tweet has media
             if (tweet.entities.media) {
-                var tweetImage = '<img src="' + tweet.entities.media[0].media_url_https + '"/>';
-            } else {
-                var tweetImage = '';
+                tweetImage = '<img src="' + tweet.entities.media[0].media_url_https + '"/>';
             }
 
             // Add marker to the map
