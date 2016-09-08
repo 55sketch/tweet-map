@@ -1,0 +1,17 @@
+{
+  "name": "TweetMap",
+  "version": "1.0.0",
+  "description": "A Twitter Map",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "dependencies": {
+    "express": "^4.x.x",
+    "oauth": "^0.9.14",
+    "request": "^2.69.0",
+    "twitter": "^1.4.0"
+  },
+  "license": "ISC"
+}

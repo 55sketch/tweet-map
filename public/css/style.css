@@ -1,0 +1,76 @@
+@import "https://fonts.googleapis.com/css?family=Roboto:400,700";
+* {
+  box-sizing: border-box; }
+
+img {
+  max-width: 100%;
+  height: auto; }
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto', sans-serif; }
+
+.container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.sidebar {
+  width: 30%;
+  padding: 30px;
+  background: #173645;
+  color: white; }
+
+label {
+  display: block;
+  padding: 10px 0;
+  font-size: 1.4em; }
+
+input {
+  display: block;
+  padding: 10px;
+  width: 100%;
+  font-size: 1.4em; }
+
+button {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 20px 0;
+  font-size: 1.4em;
+  background: #81C653;
+  cursor: pointer; }
+  button:hover {
+    background: #39AC41; }
+
+#map-container {
+  width: 70%; }
+
+#map {
+  height: 100vh;
+  width: 100%; }
+  #map.loading {
+    background-image: url("../images/loading_spinner.gif");
+    background-position: center center;
+    background-repeat: no-repeat; }
+
+.profile-image {
+  float: left; }
+
+.screen-name {
+  float: left;
+  padding: 14px; }
+
+p {
+  clear: both; }
