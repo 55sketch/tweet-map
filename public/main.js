@@ -1,6 +1,6 @@
 var tweetMap = (function() {
 
-    // Mapbox Access Token
+    // Mapbox Access Token - L object comes from the MapBox library
     L.mapbox.accessToken = 'pk.eyJ1Ijoibmlja21vcmV0b24iLCJhIjoiN1YzbVQ4OCJ9.LtxClALVgG8k2DCnA5vX-A';
 
     // Get function 
