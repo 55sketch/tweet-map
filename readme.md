@@ -1,4 +1,4 @@
-#UK Twitter Map
+# UK Twitter Map
 
 ## Installation
 
