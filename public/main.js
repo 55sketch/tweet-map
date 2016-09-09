@@ -10,8 +10,11 @@ var tweetMap = (function() {
         xhr.open('GET', url);
         xhr.onload = function() {
             if (xhr.status === 200) {
+
+                // Parse the data
                 var data = JSON.parse(xhr.responseText);
 
+                // Call success function
                 success(data);
 
             } else {
@@ -21,15 +24,44 @@ var tweetMap = (function() {
         xhr.send();
     }
 
+    // Postcode validator
+    function valid_postcode(postcode) {
+        
+        // Remove spaces
+        postcode = postcode.replace(/\s/g, "");
+        
+        // Set up regex
+        var regex = /^[A-Z]{1,2}[0-9]{1,2} ?[0-9][A-Z]{2}$/i;
+
+        // Test
+        return regex.test(postcode);
+    }
+
+    // Reinitialise map
+    function reinitMap() {
+
+        // Check if map exists
+        if (map) {
+            // Remove initial map to avoid initialisation error
+            map.remove();
+
+            // Recreate Map element
+            document.getElementById('map-container').innerHTML = '<div id="map" class="loading"></div>';
+        }
+    }
+
     // Initialise app
     function init() {
 
-        // Get Postcode from form
-        var postcode = document.getElementById('postcode').value;
+        // get form
+        var form = document.getElementById('search-form');
 
-        // Get lat/lon from postcode api
-        get('https://api.postcodes.io/postcodes/' + postcode, setFilters);
+        // bind function to form
+        form.addEventListener('submit', formSubmit, false);
 
+        // Submit form
+        document.getElementById('form-submit').click();
+        
     }
 
     // Set query string
@@ -47,7 +79,7 @@ var tweetMap = (function() {
         var filterArr = [];
 
         // Push lat/lon into filterArr
-        filterArr.push('lat=' + lat , 'lon=' + lon);
+        filterArr.push('lat=' + lat, 'lon=' + lon);
 
         // Push query and range in to filterArr
         if (q) {
@@ -67,7 +99,7 @@ var tweetMap = (function() {
     // Get tweets and initialise map
     function renderTwitterMap(filter, latitude, longitude) {
         get('/api?' + filter, function(data) {
-            
+
             // Remove loading class from body   
             document.getElementById('map').classList.remove('loading');
 
@@ -85,31 +117,39 @@ var tweetMap = (function() {
     // Add markers to the map
     function createMarkers(map, data) {
 
-        // Loop through data
-        for (var i = data.length - 1; i >= 0; i--) {
+        // Check there is data
+        if (data.length > 0) {
 
-            // Set tweet
-            var tweet = data[i];
+            // Loop through data
+            for (var i = data.length - 1; i >= 0; i--) {
 
-            // Get geo from tweet
-            var lat = tweet.place.bounding_box.coordinates[0][0][1];
-            var lon = tweet.place.bounding_box.coordinates[0][0][0];
+                // Set tweet
+                var tweet = data[i];
 
-            var tweetImage = '';
-            
-            // Check if tweet has media
-            if (tweet.entities.media) {
-                tweetImage = '<img src="' + tweet.entities.media[0].media_url_https + '"/>';
+                // Get geo from tweet
+                var lat = tweet.place.bounding_box.coordinates[0][0][1];
+                var lon = tweet.place.bounding_box.coordinates[0][0][0];
+
+                var tweetImage = '';
+
+                // Check if tweet has media
+                if (tweet.entities.media) {
+                    tweetImage = '<img src="' + tweet.entities.media[0].media_url_https + '"/>';
+                }
+
+                // Add marker to the map
+                var marker = L.marker([lat, lon]).addTo(map);
+
+                // Pop up template
+                var template = '<img src="' + tweet.user.profile_image_url_https + '" class="profile-image" /><h3 class="screen-name">' + tweet.user.screen_name + '</h3>' + tweetImage + '<p class="card-text">' + tweet.text + '</p><a href="https://twitter.com/statuses/' + tweet.id_str + '"/>Link</a>';
+
+                // Add template to marker popup
+                marker.bindPopup(template);
             }
+        } else {
 
-            // Add marker to the map
-            var marker = L.marker([lat, lon]).addTo(map);
-
-            // Pop up template
-            var template = '<img src="' + tweet.user.profile_image_url_https + '" class="profile-image" /><h3 class="screen-name">' + tweet.user.screen_name + '</h3>' + tweetImage + '<p>' + tweet.text + '</p><a href="https://twitter.com/statuses/' + tweet.id_str + '"/>Link</a>';
-
-            // Add template to marker popup
-            marker.bindPopup(template);
+            // Output error
+            document.getElementById('no-tweets').innerHTML = 'Sorry, there don\'t appear to be any geotagged tweets that match your search';
         }
     }
 
@@ -119,18 +159,24 @@ var tweetMap = (function() {
         // Prevent default
         e.preventDefault();
 
-        // Remove initial map to avoid initialisation error
-        map.remove();
+        // Get Postcode from form
+        var postcode = document.getElementById('postcode').value;
 
-        // Recreate Map element
-        document.getElementById('map-container').innerHTML = '<div id="map" class="loading"></div>';
+        // Validate postcode
+        if (valid_postcode(postcode)) {
 
-        // Run init
-        init();
+            // Reinitialise Map
+            reinitMap();
+
+            // Get lat/lon from postcode api
+            get('https://api.postcodes.io/postcodes/' + postcode, setFilters);
+
+        } else {
+
+            // Output Error
+            document.getElementById('postcode-error').innerHTML = 'Sorry, that postcode doesn\'t appear to be valid';
+        }
     }
-
-    // Bind function to form
-    document.getElementById('search-form').addEventListener('submit', formSubmit, false);
 
     // Initialise first run of map render
     init();

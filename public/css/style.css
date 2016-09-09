@@ -1,4 +1,4 @@
-@import "https://fonts.googleapis.com/css?family=Roboto:400,700";
+@import "https://fonts.googleapis.com/css?family=Roboto:400,700|Baloo+Tamma";
 * {
   box-sizing: border-box; }
 
@@ -10,6 +10,11 @@ body {
   padding: 0;
   margin: 0;
   font-family: 'Roboto', sans-serif; }
+
+h1 {
+  font-family: 'Baloo Tamma', cursive;
+  font-size: 2em;
+  border-bottom: 1px dashed #eee; }
 
 .container {
   display: -webkit-box;
@@ -30,29 +35,34 @@ body {
   background: #173645;
   color: white; }
 
-label {
+.form-label {
   display: block;
-  padding: 10px 0;
-  font-size: 1.4em; }
+  padding: 0.8rem 0;
+  font-size: 1.4em;
+  font-weight: bold; }
 
-input {
+.form-input {
   display: block;
-  padding: 10px;
+  padding: 0.8rem;
   width: 100%;
-  font-size: 1.4em; }
+  font-size: 1.4em;
+  margin-bottom: 1rem; }
 
-button {
+.button {
   display: block;
   width: 100%;
   border: none;
   border-radius: 5px;
-  padding: 10px;
-  margin: 20px 0;
+  padding: 0.8rem;
+  margin: 1.4rem 0;
   font-size: 1.4em;
   background: #81C653;
   cursor: pointer; }
-  button:hover {
+  .button:hover {
     background: #39AC41; }
+
+.error {
+  color: #D07C71; }
 
 .map-container {
   width: 70%; }
@@ -70,7 +80,24 @@ button {
 
 .screen-name {
   float: left;
-  padding: 14px; }
+  padding: 0.8rem; }
 
-p {
+.card-text {
   clear: both; }
+
+.fieldset-reset {
+  border: none;
+  padding: 0;
+  margin: 0; }
+
+.visually-hidden {
+  /*https://developer.yahoo.com/blogs/ydn/clip-hidden-content-better-accessibility-53456.html*/
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px);
+  /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0 !important;
+  border: 0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden; }

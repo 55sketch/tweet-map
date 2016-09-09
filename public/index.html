@@ -16,18 +16,23 @@
             <header>
                 <h1>UK TweetMap</h1>
             </header>
-            <form action="" id="search-form">
-                <label for="search-term">Search Term</label>
-                <input type="text" id="search-term" value="#apple">
-                <label for="postcode">Post Code</label>
-                <input type="text" id="postcode" value="B3 3LP">
-                <label for="range">Range (Miles)</label>
-                <input type="number" id="range" value="50">
-                <button>Go</button>
+            <form id="search-form">
+                <fieldset class="fieldset-reset">
+                    <legend class="visually-hidden">Tweet criteria</legend>
+                    <label class="form-label" for="search-term">Search Term</label>
+                    <input class="form-input" type="text" id="search-term" value="#apple" name="search-term">
+                    <span id="no-tweets" class="error"></span>
+                    <label class="form-label" for="postcode">Post Code *</label>
+                    <input class="form-input" type="text" id="postcode" value="B3 3LP" name="postcode" required>
+                    <span id="postcode-error" class="error"></span>
+                    <label class="form-label" for="range">Range (Miles)</label>
+                    <input class="form-input" type="number" id="range" name="range" value="50">
+                    <button class="button" id="form-submit">Go</button>
+                </fieldset>
             </form>
         </section>
         <main class="map-container" id="map-container">
-            <div id="map" class="loading"></div>
+            <div id="map" class="map loading"></div>
         </main>
     </div>
     <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
