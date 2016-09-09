@@ -5,6 +5,7 @@
 - Clone the repo `git clone https://github.com/55sketch/tweet-map.git`
 - Install dependencies `npm install`
 - Run app `node app`
+- Visit `http://localhost:5000` in your browser
 
 ## Notes
 
