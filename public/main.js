@@ -3,6 +3,42 @@ var tweetMap = (function() {
     // Mapbox Access Token - L object comes from the MapBox library
     L.mapbox.accessToken = 'pk.eyJ1Ijoibmlja21vcmV0b24iLCJhIjoiN1YzbVQ4OCJ9.LtxClALVgG8k2DCnA5vX-A';
 
+    // Initialise app
+    function init() {
+
+        // bind function to form
+        document.getElementById('search-form').addEventListener('submit', formSubmit, false);
+
+        // Submit form
+        document.getElementById('form-submit').click();
+
+    }
+
+    // Form submission function
+    function formSubmit(e) {
+
+        // Prevent default
+        e.preventDefault();
+
+        // Get Postcode from form
+        var postcode = document.getElementById('postcode').value;
+
+        // Validate postcode
+        if (valid_postcode(postcode)) {
+
+            // Reinitialise Map
+            reinitMap();
+
+            // Get lat/lon from postcode api
+            get('https://api.postcodes.io/postcodes/' + postcode, setFilters);
+
+        } else {
+
+            // Output Error
+            document.getElementById('postcode-error').innerHTML = 'Sorry, that postcode doesn\'t appear to be valid';
+        }
+    }
+
     // Get function 
     function get(url, success) {
 
@@ -48,20 +84,6 @@ var tweetMap = (function() {
             // Recreate Map element
             document.getElementById('map-container').innerHTML = '<div id="map" class="loading"></div>';
         }
-    }
-
-    // Initialise app
-    function init() {
-
-        // get form
-        var form = document.getElementById('search-form');
-
-        // bind function to form
-        form.addEventListener('submit', formSubmit, false);
-
-        // Submit form
-        document.getElementById('form-submit').click();
-
     }
 
     // Set query string
@@ -153,30 +175,6 @@ var tweetMap = (function() {
         }
     }
 
-    // Form submission function
-    function formSubmit(e) {
-
-        // Prevent default
-        e.preventDefault();
-
-        // Get Postcode from form
-        var postcode = document.getElementById('postcode').value;
-
-        // Validate postcode
-        if (valid_postcode(postcode)) {
-
-            // Reinitialise Map
-            reinitMap();
-
-            // Get lat/lon from postcode api
-            get('https://api.postcodes.io/postcodes/' + postcode, setFilters);
-
-        } else {
-
-            // Output Error
-            document.getElementById('postcode-error').innerHTML = 'Sorry, that postcode doesn\'t appear to be valid';
-        }
-    }
 
     // Initialise first run of map render
     init();
