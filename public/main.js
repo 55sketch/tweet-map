@@ -26,10 +26,10 @@ var tweetMap = (function() {
 
     // Postcode validator
     function valid_postcode(postcode) {
-        
+
         // Remove spaces
         postcode = postcode.replace(/\s/g, "");
-        
+
         // Set up regex
         var regex = /^[A-Z]{1,2}[0-9]{1,2} ?[0-9][A-Z]{2}$/i;
 
@@ -61,7 +61,7 @@ var tweetMap = (function() {
 
         // Submit form
         document.getElementById('form-submit').click();
-        
+
     }
 
     // Set query string
