@@ -74,6 +74,7 @@ h1 {
 
 // Map width and height needs to be on the ID for MapBox to work
 #map {
+    height: 600px; // Fallback for non vh browsers
     height: 100vh;
     width: 100%;
     &.loading {
