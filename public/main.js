@@ -29,6 +29,9 @@ var tweetMap = (function() {
             // Reinitialise Map
             reinitMap();
 
+            // Clear any error message
+            document.getElementById('postcode-error').innerHTML = '';
+
             // Get lat/lon from postcode api
             get('https://api.postcodes.io/postcodes/' + postcode, setFilters);
 
@@ -144,6 +147,9 @@ var tweetMap = (function() {
 
         // Check there is data
         if (data.length > 0) {
+
+            // Clear any error message
+            document.getElementById('no-tweets').innerHTML = '';
 
             // Loop through data
             for (var i = data.length - 1; i >= 0; i--) {
