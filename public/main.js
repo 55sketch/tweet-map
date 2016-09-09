@@ -76,6 +76,9 @@ var tweetMap = (function() {
     // Reinitialise map
     function reinitMap() {
 
+        // Get map
+        var map = document.getElementById('map');
+
         // Check if map exists
         if (map) {
             // Remove initial map to avoid initialisation error
