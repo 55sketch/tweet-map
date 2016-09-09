@@ -79,7 +79,7 @@ var tweetMap = (function() {
         // Check if map exists
         if (map) {
             // Remove initial map to avoid initialisation error
-            map.remove();
+            map.parentElement.removeChild(map);
 
             // Recreate Map element
             document.getElementById('map-container').innerHTML = '<div id="map" class="loading"></div>';
