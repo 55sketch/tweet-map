@@ -22,7 +22,7 @@ app.get('/', function (req, res) {
 app.get('/api', api.createAPI);
 
 // error handler
-app.use(function (err, req, res) {
+app.use(function (err, req, res, next) {
   console.error(err.stack);
   res.status(400).send(err.message);
 });
