@@ -1,5 +1,5 @@
 // Require OAuth and Twitter libraries
-var OAuth2 = require('OAuth').OAuth2;
+var OAuth2 = require('oauth').OAuth2;
 var Twitter = require('twitter');
 
 // Filter function so that only Tweets with geolocation are returned
